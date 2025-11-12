@@ -14,54 +14,52 @@ table{border-collapse:collapse;width:100%} th,td{border:1px solid #ddd;padding:6
 <h1>DFIRBox Report</h1>
 <div class="meta">Generated: {{ now }} | Profile: {{ meta.profile }} | Evidence: {{ meta.evidence }}</div>
 
-<section>
-<h2>Summary</h2>
+<section><h2>Summary</h2>
 <ul>
 <li>Total events (JSONL): {{ summary.events }}</li>
 <li>Sigma matches: {{ summary.sigma }}</li>
 <li>YARA hits: {{ summary.yara }}</li>
-</ul>
-</section>
+</ul></section>
 
-<section>
-<h2>Provenance</h2>
+<section><h2>Provenance</h2>
 <pre class="small">{{ provenance | tojson(indent=2) }}</pre>
 </section>
 
-<section>
-<h2>Sigma Matches (top 20)</h2>
-<pre class="small">{{ sigma_preview }}</pre>
-</section>
+<section><h2>Sigma Matches (top 20)</h2>
+<pre class="small">{{ sigma_preview }}</pre></section>
 
-<section>
-<h2>YARA Hits (top 50)</h2>
-<pre class="small">{{ yara_preview }}</pre>
-</section>
+<section><h2>YARA Hits (top 50)</h2>
+<pre class="small">{{ yara_preview }}</pre></section>
 
-<section>
-<h2>Artifacts</h2>
+<section><h2>Artifacts</h2>
 <ul>
 <li><a href="events.jsonl">events.jsonl</a></li>
 <li><a href="sigma_findings.json">sigma_findings.json</a></li>
 <li><a href="yara_hits.json">yara_hits.json</a></li>
 <li><a href="provenance.json">provenance.json</a></li>
 <li><a href="timeline.plaso">timeline.plaso</a></li>
-</ul>
-</section>
-
+<li><a href="plaso.log">plaso.log</a></li>
+</ul></section>
 </body></html>
 """
 
+def _safe_load_json(path, default):
+    try:
+        with open(path,"r") as f: return json.load(f)
+    except Exception:
+        return default
+
 def build(outdir, jsonl_events, sigma_path, yara_path, provenance_path, meta):
-    with open(jsonl_events,"r") as f:
-        events_count = sum(1 for _ in f)
+    events_count = 0
+    if os.path.exists(jsonl_events):
+        with open(jsonl_events,"r") as f:
+            events_count = sum(1 for _ in f)
 
-    sigma = json.load(open(sigma_path,"r"))
-    yara = json.load(open(yara_path,"r"))
-    prov = json.load(open(provenance_path,"r"))
+    sigma = _safe_load_json(sigma_path, [])
+    yara  = _safe_load_json(yara_path, [])
+    prov  = _safe_load_json(provenance_path, {})
 
-    tpl = Template(TEMPLATE)
-    html = tpl.render(
+    html = Template(TEMPLATE).render(
         now=str(datetime.datetime.utcnow()),
         meta=meta,
         summary={"events": events_count, "sigma": len(sigma), "yara": len(yara)},
@@ -71,10 +69,8 @@ def build(outdir, jsonl_events, sigma_path, yara_path, provenance_path, meta):
     )
 
     out_html = os.path.join(outdir, "dfirbox_report.html")
-    with open(out_html,"w") as f:
-        f.write(html)
+    with open(out_html,"w") as f: f.write(html)
 
-    # also emit a machine-readable summary
     with open(os.path.join(outdir, "dfirbox_report.json"), "w") as f:
         json.dump({
             "events": events_count,

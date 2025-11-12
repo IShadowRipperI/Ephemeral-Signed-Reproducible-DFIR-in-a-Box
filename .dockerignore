@@ -1,0 +1,12 @@
+*
+!Dockerfile
+!requirements.txt
+!entrypoint.sh
+!src/**
+!profiles/**
+!rules/**
+!README.md
+!LICENSE
+!.github/**
+!docs/**
+!tests/**

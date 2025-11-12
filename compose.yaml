@@ -1,0 +1,10 @@
+services:
+  dfirbox:
+    image: ghcr.io/IShadowRipperI/dfirbox:0.1
+    uncomment on ARM if using amd64 image:
+    platform: linux/amd64
+    entrypoint: ["/usr/bin/tini","--","/usr/local/bin/entrypoint.sh"]
+    command: ["dfirbox","run","-e","/evidence","-o","/out","-p","/app/profiles/windows-triage.yml"]
+    volumes:
+      - ./evidence:/evidence:ro
+      - ./out:/out

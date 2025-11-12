@@ -1,0 +1,10 @@
+name: linux-triage
+timeline:
+  plaso: true
+detections:
+  sigma:
+    rules_dir: /app/rules/sigma
+    pipelines: [linux]
+  yara:
+    rules_dir: /app/rules/yara
+    paths: ["/evidence"]

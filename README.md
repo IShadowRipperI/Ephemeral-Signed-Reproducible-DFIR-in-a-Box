@@ -57,6 +57,7 @@ docker run --rm \
 ```
 
 ## file arch
+```bash
 dfirbox/
 ├── Dockerfile
 ├── requirements.txt
@@ -90,6 +91,7 @@ dfirbox/
 │   └── EVALUATION.md
 └── tests/
     └── test_smoke.sh
+```
 
 ## How to test
 ```bash

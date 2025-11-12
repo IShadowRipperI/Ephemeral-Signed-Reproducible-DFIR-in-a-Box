@@ -91,3 +91,18 @@ dfirbox/
 └── tests/
     └── test_smoke.sh
 
+## How to test
+```bash
+docker buildx build --platform linux/amd64 -t dfirbox:0.1 .
+
+mkdir -p evidence out
+echo "cmd.exe /c whoami" > evidence/demo.txt
+
+docker run --rm --platform linux/amd64 \
+  -v "$PWD/evidence":/evidence:ro -v "$PWD/out":/out \
+  dfirbox:0.1 dfirbox run -e /evidence -o /out -p /app/profiles/windows-triage.yml
+
+ls -lh out
+wc -l out/events.jsonl
+jq '.events, .sigma_matches, .yara_hits' out/dfirbox_report.json
+```

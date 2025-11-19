@@ -1,8 +1,9 @@
 import argparse, json, os, sys, time
 from rich import print
-from src.pipeline import timeline, detections, report, provenance
+from src.pipeline import timeline, detections, report, provenance, memory, hayabusa
 
 DEFAULT_PROFILE = os.environ.get("DFIRBOX_PROFILE", "/app/profiles/windows-triage.yml")
+
 
 def cmd_run(args):
     evidence = os.path.abspath(args.evidence)
@@ -24,10 +25,20 @@ def cmd_run(args):
     sigma_out = detections.run_sigma(jsonl_path, profile, outdir)
     yara_out  = detections.run_yara(evidence, profile, outdir)
 
-    # 3. provenance
+    # 3. MemProcFS memory forensics (optional)
+    memproc_out = memory.run_memprocfs(evidence, profile, outdir)
+    if memproc_out:
+        meta["memprocfs"] = memproc_out
+
+    # 4. Hayabusa EVTX timeline (optional)
+    hayabusa_out = hayabusa.run_hayabusa(evidence, profile, outdir)
+    if hayabusa_out:
+        meta["hayabusa"] = hayabusa_out
+
+    # 5. provenance
     prov = provenance.generate(evidence, profile, outdir)
 
-    # 4. report
+    # 6. report
     summary = report.build(
         outdir=outdir,
         jsonl_events=jsonl_path,
@@ -40,18 +51,21 @@ def cmd_run(args):
     print(f"[green]Done[/green]. Report: {summary}")
     return 0
 
+
 def cmd_version(_):
     print(json.dumps(provenance.tool_versions(), indent=2))
     return 0
+
 
 def cmd_selftest(args):
     # Very light smoke check
     outdir = os.path.abspath(args.out)
     os.makedirs(outdir, exist_ok=True)
-    with open(os.path.join(outdir,"selftest.txt"), "w") as f:
+    with open(os.path.join(outdir, "selftest.txt"), "w") as f:
         f.write("dfirbox selftest ok\n")
     print("selftest ok")
     return 0
+
 
 def main():
     p = argparse.ArgumentParser(prog="dfirbox")
@@ -67,11 +81,12 @@ def main():
     pver.set_defaults(func=cmd_version)
 
     pst = sub.add_parser("selftest", help="Quick smoke test")
-    pst.add_argument("--out","-o", required=True)
+    pst.add_argument("--out", "-o", required=True)
     pst.set_defaults(func=cmd_selftest)
 
     args = p.parse_args()
     sys.exit(args.func(args))
+
 
 if __name__ == "__main__":
     main()

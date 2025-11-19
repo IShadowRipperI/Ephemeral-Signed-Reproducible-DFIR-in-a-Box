@@ -10,3 +10,5 @@
 !.github/**
 !docs/**
 !tests/**
+!hayabusa-3.7.0/**
+!out_memproc/**

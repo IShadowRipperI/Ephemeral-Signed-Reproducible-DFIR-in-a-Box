@@ -1,6 +1,11 @@
 name: windows-triage
 timeline:
   plaso: true
+  hayabusa:
+    enabled: true           # set to true to run Hayabusa json-timeline
+    evtx_dirs: ["/evidence"] # directories to scan for .evtx files
+    # min_level: medium      # optional: minimum rule level
+    # extra_args: []         # optional: additional hayabusa CLI args
 detections:
   sigma:
     rules_dir: /app/rules/sigma
@@ -8,3 +13,9 @@ detections:
   yara:
     rules_dir: /app/rules/yara
     paths: ["/evidence"]
+memory:
+  memprocfs:
+    enabled: true          # set to true when a memory image is present
+    device: "/evidence/CLIENT-02.dmp"  # optional: override auto-discovery
+    forensic: true
+    # extra_args: []         # optional: additional MemProcFS args

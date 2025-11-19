@@ -1,5 +1,72 @@
-MIT License
-
+Dominic Personal Noncommercial License 1.0
 Copyright (c) 2025 Dominic D'Onofrio
 
-Permission is hereby granted, free of charge, to any person obtaining a copy...
+Definitions
+- “Software”: the source code, Dockerfiles, build scripts, and Docker images in this repository.
+- “You”: a natural person using the Software in a personal capacity.
+- “Company Use”: any use by or for a legal entity (including an employer, client, school, or government) or any use intended for commercial advantage, revenue, or business operations.
+
+Grant
+- For personal, noncommercial use only, You may download, run, view, modify, and share unmodified copies of the Software.
+- You may create and use modified versions for personal use, but you may not distribute modified versions.
+
+Restrictions
+- No Company Use without a commercial license from the copyright holder.
+- No hosting, SaaS, managed service, consulting delivery, paid support, or internal business operations.
+- No sublicensing. No removal of copyright or license notices.
+- The Docker image(s) are covered on the same terms. Derivative images are allowed only for personal, noncommercial use and may not be published to public registries.
+
+Attribution
+- Keep this license text and the copyright notice in all copies.
+
+Termination
+- This license terminates automatically if You breach it. Upon termination, You must stop using and delete the Software and images.
+
+Disclaimer
+- The Software is provided “AS IS,” without warranty of any kind. The copyright holder is not liable for any damages arising from use of the Software.
+
+Commercial Contact
+- Companies must obtain a paid commercial license. See below.
+
+
+-------------------------------------------------------------------------------------------
+Commercial License for Software by Dominic D'Onofrio
+Version 1.0 — 2025-11-11
+
+Grant
+- Licensor grants the Licensee (a legal entity) a nonexclusive, nontransferable, worldwide license to:
+  (a) install, run, and use the Software and Docker images in production and non-production;
+  (b) modify the Software and build derivative Docker images;
+  (c) distribute the Software and derivative images internally within Licensee.
+- No external redistribution, resale, or offering the Software as a hosted service to third parties without a separate OEM/SaaS addendum.
+
+Scope & Limits
+- Seat or Instance Metric: per user.
+- Environment: internal business use by Licensee and its employees/contractors.
+- Public registries: publishing derivative images to public registries is prohibited unless images are unusable without Licensee’s internal systems.
+- Attribution: retain copyright notices in source distributions.
+
+Fees & Term
+- Fee: USD 2500$ per user. Invoiced annually in advance. Net 30.
+- Term: 1 year. Renews automatically unless either party gives 30 days’ notice.
+
+Confidentiality
+- License keys, private images, and non-public code received from Licensor are Confidential.
+
+IP
+- Licensor retains all IP rights. No patent rights are granted.
+
+Compliance
+- Licensee must implement reasonable controls to limit use to the licensed metric. Licensor may request an annual self-certification.
+
+Warranties & Liability
+- Software is provided “AS IS.” No implied warranties. Licensor’s aggregate liability is capped at fees paid in the 12 months before the claim.
+
+Termination
+- Either party may terminate for uncured material breach after 30 days’ notice. On termination, Licensee ceases use except for archival records and removes images from runtime systems within 30 days.
+
+Governing Law & Venue
+- New Mexico law. Venue: the state courts of Bernalillo County, New Mexico, and the federal courts in the District of New Mexico.
+
+Contact
+- Licensing: spirit.beater7v@icloud.com

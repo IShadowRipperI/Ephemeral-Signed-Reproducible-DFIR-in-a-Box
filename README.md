@@ -87,6 +87,8 @@ dfirbox/
 │   └── pipeline/
 │       ├── __init__.py
 │       ├── timeline.py
+│       ├── hayabusa.py
+│       ├── memory.py
 │       ├── detections.py
 │       ├── report.py
 │       └── provenance.py

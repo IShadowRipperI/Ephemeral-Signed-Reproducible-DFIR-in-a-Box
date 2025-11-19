@@ -62,7 +62,9 @@ docker buildx build --platform linux/amd64 -t dfirbox:test .
 ## How to test
 ```Bash
 docker buildx build --platform linux/amd64 -t dfirbox:test .
+mkdir evidence
 echo "cmd.exe /c whoami" > evidence/demo.txt
+# add mem file if u want to test 
 ./run_dfirbox.sh
 ls -lh out
 wc -l out/events.jsonl

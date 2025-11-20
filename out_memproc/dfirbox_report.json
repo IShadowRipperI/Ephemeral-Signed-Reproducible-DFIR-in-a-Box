@@ -1,0 +1,31 @@
+{
+  "events": 6,
+  "sigma_matches": 0,
+  "yara_hits": 0,
+  "meta": {
+    "start_epoch": 1763681858,
+    "profile": "/app/profiles/windows-triage.yml",
+    "evidence": "/evidence",
+    "params": {
+      "plaso": true,
+      "sigma": true,
+      "yara": true,
+      "volatility": false
+    },
+    "memprocfs": {
+      "device": "/evidence/CLIENT-02.dmp",
+      "processes_jsonl": "/out/memprocfs_processes.jsonl",
+      "processes_summary": "/out/memprocfs_summary.json",
+      "net": "/out/memprocfs_net.json",
+      "kdriver": "/out/memprocfs_kdriver.json",
+      "services": "/out/memprocfs_services.json",
+      "users": "/out/memprocfs_users.json",
+      "eventlogs_dir": "/out/memprocfs_eventlogs"
+    },
+    "hayabusa": {
+      "timeline": "/out/hayabusa_out/hayabusa_timeline.jsonl",
+      "summary": "/out/hayabusa_out/hayabusa_summary.json",
+      "source_dir": "/out/memprocfs_eventlogs"
+    }
+  }
+}

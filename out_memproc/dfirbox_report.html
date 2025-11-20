@@ -1,0 +1,75 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>DFIRBox Report</title>
+<style>
+body{font-family:system-ui,Arial,sans-serif;margin:24px;}
+h1{margin:0 0 8px 0;} .meta{color:#555;margin-bottom:16px}
+section{margin:16px 0;padding:12px;border:1px solid #ddd;border-radius:8px}
+code,pre{background:#f6f8fa;padding:4px;border-radius:4px}
+table{border-collapse:collapse;width:100%} th,td{border:1px solid #ddd;padding:6px;text-align:left}
+.small{font-size:12px;color:#666}
+</style></head><body>
+<h1>DFIRBox Report</h1>
+<div class="meta">Generated: 2025-11-20 23:38:40.597662 | Profile: /app/profiles/windows-triage.yml | Evidence: /evidence</div>
+
+<section><h2>Summary</h2>
+<ul>
+<li>Total events (JSONL): 6</li>
+<li>Sigma matches: 0</li>
+<li>YARA hits: 0</li>
+</ul></section>
+
+<section><h2>Provenance</h2>
+<pre class="small">{
+  "environment": {
+    "user": "runner"
+  },
+  "host": {
+    "container": true
+  },
+  "inputs": {
+    "evidence_path": "/evidence",
+    "evidence_tree_sha256": "98ee6343d702acbdcceda3b9860da1fbbc7ec95a958080d3992a71da2ef7a759",
+    "file_count": 1,
+    "profile": "/app/profiles/windows-triage.yml",
+    "profile_sha256": "7ad0cd38ed82419b76b2939848441b2718ffcba23e86a1a037974f998fb8ed74"
+  },
+  "outputs": {
+    "events_jsonl": "events.jsonl",
+    "plaso": "timeline.plaso",
+    "sigma_findings": "sigma_findings.json",
+    "yara_hits": "yara_hits.json"
+  },
+  "rules": {
+    "dir": "/app/rules",
+    "file_count": 4,
+    "sha256_tree": "f1e4bac37f61600468d433d547a1ac449dda01e3fabc98ccb47b180c71bd963d"
+  },
+  "schema": "dfirbox-provenance-0.1",
+  "timestamp": 1763681919,
+  "tool_versions": {
+    "plaso": "plaso - log2timeline version 20250918",
+    "psort": "plaso - psort version 20250918",
+    "python": "Python 3.12.3",
+    "syft": null,
+    "yara": "4.5.0",
+    "yara_python": "4.5.1"
+  }
+}</pre>
+</section>
+
+<section><h2>Sigma Matches (top 20)</h2>
+<pre class="small">[]</pre></section>
+
+<section><h2>YARA Hits (top 50)</h2>
+<pre class="small">[]</pre></section>
+
+<section><h2>Artifacts</h2>
+<ul>
+<li><a href="events.jsonl">events.jsonl</a></li>
+<li><a href="sigma_findings.json">sigma_findings.json</a></li>
+<li><a href="yara_hits.json">yara_hits.json</a></li>
+<li><a href="provenance.json">provenance.json</a></li>
+<li><a href="timeline.plaso">timeline.plaso</a></li>
+<li><a href="plaso.log">plaso.log</a></li>
+</ul></section>
+</body></html>

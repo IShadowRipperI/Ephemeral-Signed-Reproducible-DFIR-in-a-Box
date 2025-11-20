@@ -1,0 +1,7 @@
+{
+  "total_events": 30,
+  "hits_by_level": {
+    "unknown": 30
+  },
+  "source_dir": "/out/memprocfs_eventlogs"
+}

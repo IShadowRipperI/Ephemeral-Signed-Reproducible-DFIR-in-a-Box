@@ -1,0 +1,36 @@
+{
+  "schema": "dfirbox-provenance-0.1",
+  "timestamp": 1763681919,
+  "host": {
+    "container": true
+  },
+  "inputs": {
+    "evidence_path": "/evidence",
+    "evidence_tree_sha256": "98ee6343d702acbdcceda3b9860da1fbbc7ec95a958080d3992a71da2ef7a759",
+    "file_count": 1,
+    "profile": "/app/profiles/windows-triage.yml",
+    "profile_sha256": "7ad0cd38ed82419b76b2939848441b2718ffcba23e86a1a037974f998fb8ed74"
+  },
+  "environment": {
+    "user": "runner"
+  },
+  "tool_versions": {
+    "plaso": "plaso - log2timeline version 20250918",
+    "psort": "plaso - psort version 20250918",
+    "yara": "4.5.0",
+    "python": "Python 3.12.3",
+    "syft": null,
+    "yara_python": "4.5.1"
+  },
+  "rules": {
+    "dir": "/app/rules",
+    "sha256_tree": "f1e4bac37f61600468d433d547a1ac449dda01e3fabc98ccb47b180c71bd963d",
+    "file_count": 4
+  },
+  "outputs": {
+    "plaso": "timeline.plaso",
+    "events_jsonl": "events.jsonl",
+    "sigma_findings": "sigma_findings.json",
+    "yara_hits": "yara_hits.json"
+  }
+}

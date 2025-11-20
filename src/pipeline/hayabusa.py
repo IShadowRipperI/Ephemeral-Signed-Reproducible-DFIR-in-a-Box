@@ -8,25 +8,35 @@ import yaml
 from rich import print
 
 
-def _run(cmd_list):
+def _run(cmd_list, *, cwd: Optional[str] = None) -> str:
     """Run a command list with logging, return combined stdout/stderr text."""
     cmd_str = " ".join(shlex.quote(c) for c in cmd_list)
-    print(f"[cyan]Hayabusa: running {cmd_str}[/cyan]")
+    if cwd:
+        print(f"[cyan]Hayabusa: running (cwd={cwd}) {cmd_str}[/cyan]")
+    else:
+        print(f"[cyan]Hayabusa: running {cmd_str}[/cyan]")
+
     proc = subprocess.run(
         cmd_list,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         text=True,
+        check=False,
+        cwd=cwd,
     )
+    output = proc.stdout or ""
+
     if proc.returncode != 0:
-        raise RuntimeError(
-            f"Hayabusa command failed with code {proc.returncode}\n{proc.stdout}"
-        )
-    if proc.stdout:
-        print("[blue]Hayabusa output (truncated):[/blue]")
-        for line in proc.stdout.splitlines()[:10]:
-            print("  " + line)
-    return proc.stdout
+        print(f"[yellow]Hayabusa: command exited with code {proc.returncode}[/yellow]")
+
+    if output.strip():
+        # Show only the first few lines so we don't spam the console
+        lines = output.splitlines()
+        preview = "\n".join(lines[:10])
+        print("Hayabusa output (truncated):")
+        print("  " + "\n  ".join(preview.splitlines()))
+
+    return output
 
 
 def run_hayabusa(evidence_dir: str, profile_path: str, outdir: str) -> Optional[Dict[str, str]]:
@@ -50,7 +60,7 @@ def run_hayabusa(evidence_dir: str, profile_path: str, outdir: str) -> Optional[
     mem_cfg = (profile.get("memory") or {}).get("memprocfs") or {}
     mem_evtx_dir = mem_cfg.get("eventlog_dir") or os.path.join(outdir, "memprocfs_eventlogs")
 
-    target_dir = None
+    target_dir: Optional[str] = None
 
     if os.path.isdir(mem_evtx_dir):
         evtx_files = [
@@ -83,8 +93,13 @@ def run_hayabusa(evidence_dir: str, profile_path: str, outdir: str) -> Optional[
     for extra in (cfg.get("extra_args") or []):
         cmd.append(str(extra))
 
+    # IMPORTANT FIX:
+    # Run Hayabusa from its own directory so it can find its rules/config
+    # (encoded_rules.yml / rules_config_files.txt or rules/config/*).
+    hayabusa_home = os.environ.get("HAYABUSA_HOME", "/opt/hayabusa")
+
     try:
-        _run(cmd)
+        _run(cmd, cwd=hayabusa_home)
     except FileNotFoundError:
         print("[yellow]Hayabusa: 'hayabusa' binary not found in PATH, skipping[/yellow]")
         return None
@@ -108,20 +123,25 @@ def run_hayabusa(evidence_dir: str, profile_path: str, outdir: str) -> Optional[
                     continue
                 level = ev.get("level") or ev.get("lvl") or "unknown"
                 levels[level] = levels.get(level, 0) + 1
+    except FileNotFoundError:
+        print(f"[yellow]Hayabusa: timeline file not found at {timeline_path}[/yellow]")
     except Exception as e:
         print(f"[yellow]Hayabusa: failed summarizing JSONL: {e}[/yellow]")
 
     summary_path = os.path.join(hayabusa_outdir, "hayabusa_summary.json")
-    with open(summary_path, "w") as f:
-        json.dump(
-            {
-                "total_events": total_events,
-                "hits_by_level": levels,
-                "source_dir": target_dir,
-            },
-            f,
-            indent=2,
-        )
+    try:
+        with open(summary_path, "w") as f:
+            json.dump(
+                {
+                    "total_events": total_events,
+                    "hits_by_level": levels,
+                    "source_dir": target_dir,
+                },
+                f,
+                indent=2,
+            )
+    except Exception as e:
+        print(f"[yellow]Hayabusa: failed writing summary JSON: {e}[/yellow]")
 
     print(f"[green]Hayabusa: wrote[/green] {timeline_path} and {summary_path}")
     return {"timeline": timeline_path, "summary": summary_path, "source_dir": target_dir}
